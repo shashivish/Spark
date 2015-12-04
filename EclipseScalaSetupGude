@@ -1,0 +1,98 @@
+Setting up Eclipse : Spark (Scala) Development
+1.	Download Scala IDE from http://scala-ide.org/
+2.	Create a Maven Project with some grouID and artifactID
+<modelVersion>4.0.0</modelVersion>
+	<groupId>org.com.td.sparkdemo</groupId>
+	<artifactId>spark</artifactId>
+<version>0.0.1-SNAPSHOT</version>
+3.	Updated Dependencies for Spark,Scala and Maven. Attached sample pom.xml
+ 
+4.	Change Scala compiler to 2.10.* as we are using spark-core_2.10. 
+ 
+
+5.	Refactor your project from java to scala. Right click on project – select refactor – select rename – change java to scala.
+6.	 Add Scala Nature : Right on Project – Select Scala – Add Scala Nature.
+7.	Add Scala Object and start writing your spark job in scala. Here is a sample code
+package org.com.td.sparkdemo.spark /** Same as your groupid.artifactid*/
+
+import org.apache.spark.SparkConf
+import org.apache.spark.SparkContext
+
+object WordCount {
+  
+  def main(args: Array[String]) = {
+    
+    val conf = new SparkConf() 
+      .setAppName("WordCount")
+      .setMaster("local")
+    val sc = new SparkContext(conf)
+    
+    val test = sc.textFile("food.txt") /*RDD to load text file*/
+    test.flatMap { line =>
+      line.split(" ")
+    }
+    .map { word => 
+      (word,1)
+    }
+    .reduceByKey(_ + _)
+    .saveAsTextFile("food.count.txt")
+    
+  }
+
+}
+8.	Package your maven project using below command
+mvn clean package
+9.	Once packaging is done, you are good to go. Make sure you do not encounter any error while running your maven command. Your build should be successful.
+10.	Run below command to execute your job.
+/usr/lib/spark/bin/spark-submit –class org.com.td.sparkdemo.spark.WordCount  --master yarn-cluster  target/spark-0.0.1-SNAPSHOT-jar-with-dependencies.jar 
+
+Enjoy sparking….!!!!!!! 
+Setting up Eclipse : Spark (Scala) Development
+1.	Download Scala IDE from http://scala-ide.org/
+2.	Create a Maven Project with some grouID and artifactID
+<modelVersion>4.0.0</modelVersion>
+	<groupId>org.com.td.sparkdemo</groupId>
+	<artifactId>spark</artifactId>
+<version>0.0.1-SNAPSHOT</version>
+3.	Updated Dependencies for Spark,Scala and Maven. Attached sample pom.xml
+ 
+4.	Change Scala compiler to 2.10.* as we are using spark-core_2.10. 
+ 
+
+5.	Refactor your project from java to scala. Right click on project – select refactor – select rename – change java to scala.
+6.	 Add Scala Nature : Right on Project – Select Scala – Add Scala Nature.
+7.	Add Scala Object and start writing your spark job in scala. Here is a sample code
+package org.com.td.sparkdemo.spark /** Same as your groupid.artifactid*/
+
+import org.apache.spark.SparkConf
+import org.apache.spark.SparkContext
+
+object WordCount {
+  
+  def main(args: Array[String]) = {
+    
+    val conf = new SparkConf() 
+      .setAppName("WordCount")
+      .setMaster("local")
+    val sc = new SparkContext(conf)
+    
+    val test = sc.textFile("food.txt") /*RDD to load text file*/
+    test.flatMap { line =>
+      line.split(" ")
+    }
+    .map { word => 
+      (word,1)
+    }
+    .reduceByKey(_ + _)
+    .saveAsTextFile("food.count.txt")
+    
+  }
+
+}
+8.	Package your maven project using below command
+mvn clean package
+9.	Once packaging is done, you are good to go. Make sure you do not encounter any error while running your maven command. Your build should be successful.
+10.	Run below command to execute your job.
+/usr/lib/spark/bin/spark-submit –class org.com.td.sparkdemo.spark.WordCount  --master yarn-cluster  target/spark-0.0.1-SNAPSHOT-jar-with-dependencies.jar 
+
+Enjoy sparking….!!!!!!! 
